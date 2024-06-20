@@ -1,3 +1,5 @@
 <article>
-    {{ text }}
+    {% include 'includes/ul.html' %}
+    {% include 'includes/p.html' %}
+    <a href="{% url 'posts:group_posts' slug=slug %}">все мысли этого руса</a>
 </article>

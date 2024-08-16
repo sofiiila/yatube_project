@@ -1,5 +1,6 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django.contrib.auth import get_user_model
+from django.contrib.auth.views import PasswordChangeView
 
 User = get_user_model()
 
@@ -10,3 +11,7 @@ class CreationForm(UserCreationForm):
         model = User
 
         fields = ('first_name', 'last_name', 'username', 'email')
+
+
+
+

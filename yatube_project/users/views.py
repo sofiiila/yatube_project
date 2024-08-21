@@ -13,7 +13,4 @@ class SignUp(CreateView):
     template_name = 'users/signup.html'
 
 
-class PasswordReset(PasswordResetView):
-    template_name = 'users/password_reset_form.html'
-    success_url = '/auth/password_reset/done/'
 

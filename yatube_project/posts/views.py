@@ -6,7 +6,6 @@ import datetime
 from .models import Post, Group, User
 
 
-
 def index(request):
     post_list = Post.objects.all().order_by('-pub_date')
 
@@ -29,3 +28,29 @@ def group_posts(request, slug):
         'posts': posts,
     }
     return render(request, 'posts/group_posts.html', context)
+
+
+def profile(request, username):
+    user = get_object_or_404(User, username=username)
+    posts = Post.objects.filter(author=user)
+
+    context = {
+        'user_name': user.username,
+        'total_posts': posts.count(),
+        'user_posts_url': f'/profile/{username}',
+        'posts': posts
+    }
+    return render(request, 'posts/profile.html', context)
+
+
+def post_detail(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    context = {
+        'user_name': post.author.username,
+        'post_date': post.pub_date,
+        'post_content': post.text,
+        'post_detail_url': f'/posts/{post_id}',
+        'group_posts_url': '/group/posts'
+    }
+    return render(request, 'posts/post_detail.html', context)

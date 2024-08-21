@@ -1,0 +1,63 @@
+{% load static %}
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{% static 'img/fav/favicon.ico' %}" type="image">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/fav/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/fav/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/fav/favicon-16x16.png' %}">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <title>Пост {{ post_content|truncatewords:5 }}</title>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-light" style="background-color: lightskyblue">
+        <div class="container">
+          <a class="navbar-brand" href="/">
+            <img src="/static/img/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+            <span style="color:red">Ya</span>tube
+          </a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <div class="row">
+        <aside class="col-12 col-md-3">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Дата публикации: {{ post_date }}
+            </li>
+            <!-- если у поста есть группа -->
+            <li class="list-group-item">
+              Группа: {{ post.group.name }}
+              <a href="{{ group_posts_url }}">
+                все записи группы
+              </a>
+            </li>
+            <li class="list-group-item">
+              Автор: {{ user_name }}
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Всего постов автора:  <span>{{ total_posts }}</span>
+            </li>
+            <li class="list-group-item">
+              <a href="{{ user_posts_url }}">
+                все посты пользователя
+              </a>
+            </li>
+          </ul>
+        </aside>
+        <article class="col-12 col-md-9">
+          <p>
+            {{ post_content }}
+          </p>
+        </article>
+      </div>
+    </main>
+    <footer class="border-top text-center py-3">
+      <p>© {{ year }} Copyright <span style="color:red">Ya</span>tube</p>
+    </footer>
+  </body>
+</html>

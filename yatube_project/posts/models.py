@@ -25,3 +25,11 @@ class Group(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class CreatePost(models.Model):
+    text = models.TextField()
+    group = models.ForeignKey('auth.Group', on_delete=models.CASCADE, blank=True, null=True)
+
+    def __str__(self):
+        return self.text

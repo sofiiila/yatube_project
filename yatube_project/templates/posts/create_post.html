@@ -28,6 +28,11 @@
                 </a>
               </li>
             </ul>
+            <form method="post">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <button type="submit" class="btn btn-primary">Создать</button>
+            </form>
           </aside>
           <article class="col-12 col-md-9">
             <p>

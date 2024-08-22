@@ -1,8 +1,9 @@
 from django import forms
-from .models import CreatePost
+
+from .models import Post
 
 
 class PostForm(forms.ModelForm):
     class Meta:
-        model = CreatePost
+        model = Post
         fields = ['text', 'group']

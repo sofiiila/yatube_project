@@ -1,50 +1,60 @@
 {% extends "base.html" %}
-{% load static %}
+{% block title %}Новый пост{% endblock %}
 {% block content %}
-  <body>
-    <main>
-      <div class="container py-5">
-        <div class="row">
-          <aside class="col-12 col-md-3">
-<!--            <ul class="list-group list-group-flush">-->
-<!--              <li class="list-group-item">-->
-<!--                Дата публикации: {{ post.pub_date|date:"d E Y" }}-->
-<!--              </li>-->
-<!--              <li class="list-group-item">-->
-<!--                Группа: {{ post.group.name }}-->
-<!--                <a href="{{ group_posts_url }}">-->
-<!--                  все записи группы-->
-<!--                </a>-->
-<!--              </li>-->
-<!--              <li class="list-group-item">-->
-<!--                Автор: {{ user_name }}-->
-<!--              </li>-->
-<!--              <li class="list-group-item d-flex justify-content-between align-items-center">-->
-<!--                Всего постов автора:  <span>{{ total_posts }}</span>-->
-<!--              </li>-->
-<!--              <li class="list-group-item">-->
-<!--                <a href="{{ user_posts_url }}">-->
-<!--                  все посты пользователя-->
-<!--                </a>-->
-<!--              </li>-->
-<!--            </ul>-->
-            <form method="post">
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 p-5">
+      <div class="card">
+        <div class="card-header">Новый пост</div>
+          <div class="card-body">
+          {% load user_filters %}
+              {% if form.errors %}
+                  {% for field in form %}
+                    {% for error in field.errors %}
+                      <div class="alert alert-danger">
+                        {{ error|escape }}
+                      </div>
+                    {% endfor %}
+                  {% endfor %}
+                  {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                      {{ error|escape }}
+                    </div>
+                  {% endfor %}
+              {% endif %}
+
+              <form method="post" action="{% url 'posts:post_create' %}">
               {% csrf_token %}
-              {{ form.as_p }}
-              <button type="submit" class="btn btn-primary">Создать</button>
+
+
+              {% for field in form %}
+                <div class="form-group row my-3 p-3">
+                  <label for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                      {% if field.field.required %}
+                        <span class="required text-danger">*</span>
+                      {% endif %}
+                  </label>
+                  {{ field|addclass:'form-control' }}
+                    {% if field.help_text %}
+                      <small
+                         id="{{ field.id_for_label }}-help"
+                         class="form-text text-muted"
+                      >
+                        {{ field.help_text|safe }}
+                      </small>
+                    {% endif %}
+                </div>
+              {% endfor %}
+              <div class="d-flex justify-content-end">
+                  <button type="submit" class="btn btn-primary">
+                      Сохранить
+                  </button>
+              </div>
             </form>
-          </aside>
-          <article class="col-12 col-md-9">
-            <p>
-              {{ post_content }}
-            </p>
-             <!-- эта кнопка видна только автору -->
-            <a class="btn btn-primary" href="{ url 'posts/update_post' %}">
-              редактировать запись
-            </a>
-          </article>
-        </div>
-      </div>
-    </main>
-  </body>
+          </div> <!-- card body -->
+        </div> <!-- card -->
+      </div> <!-- col -->
+  </div> <!-- row -->
+</div>  <!--container-->
 {% endblock %}

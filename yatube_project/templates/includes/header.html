@@ -1,16 +1,29 @@
 {% load static %}
 <header>
-  <nav class="navbar navbar-light" style="background-color: lightskyblue">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <style>
+        @font-face {
+            font-family: 'jeju';
+            src: url('static/fonts/JejuHallasan-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .custom-font {
+            color: #000;
+            font-family: 'jeju', sans-serif;
+            font-size: 28px;
+
+        .nav-link {
+            color: #EB631B; /* Цвет текста */
+        }
+  </style>
+  <nav class="navbar navbar-light" style="background-color: #AAC9E7">
     <div class="container">
       <a class="navbar-brand" href="{% url 'posts:index' %}">
-        <img src="{% static 'img/logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
-        <span style="color:red">Ya</span>tube
+        <img src="{% static 'img/yalogo.png' %}" width="45" height="45" class="d-inline-block align-center" alt="">
+        <span class="custom-font align-middle">Ya</span><span class="custom-font align-middle">tube</span>
       </a>
-
-      {% comment %}
-      Меню - список пунктов со стандартными классами Bootsrap.
-      Класс nav-pills нужен для выделения активных пунктов
-      {% endcomment %}
       <ul class="nav nav-pills">
         {% with request.resolver_match.view_name as view_name %}
         <li class="nav-item">

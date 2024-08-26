@@ -29,23 +29,21 @@
             <li class="list-group-item">
               Дата публикации: {{ post_date }}
             </li>
-            <!-- если у поста есть группа -->
-            <li class="list-group-item">
-              Группа: {{ post.group.name }}
-              <a href="{{ group_posts_url }}">
-                все записи группы
-              </a>
-            </li>
+            {% if post.group and post.group.slug %}
+              <li class="list-group-item">
+                Группа: {{ post.group.name }}
+                <a href="{{ group_posts_url }}">
+                  все записи группы
+                </a>
+              </li>
+            {% endif %}
             <li class="list-group-item">
               Автор: {{ user_name }}
             </li>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              Всего постов автора:  <span>{{ total_posts }}</span>
-            </li>
             <li class="list-group-item">
-              <a href="{{ user_posts_url }}">
-                все посты пользователя
-              </a>
+              {% if post.group and post.group.slug %}
+                <a href="{% url 'posts:group_posts' post.group.slug %}">все записи группы</a>
+              {% endif %}
             </li>
           </ul>
         </aside>

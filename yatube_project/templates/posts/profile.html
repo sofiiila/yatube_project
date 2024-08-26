@@ -31,7 +31,9 @@
           <ul>
             <li>
               Автор: {{ user_name }}
-              <a href="{{ user_posts_url }}">все посты пользователя</a>
+              {% if post.group and post.group.slug %}
+                <a href="{% url 'posts:group_posts' post.group.slug %}">все записи группы</a>
+              {% endif %}
             </li>
             <li>
               Дата публикации: {{ post.published_date }}

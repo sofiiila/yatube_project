@@ -1,6 +1,5 @@
 {% load static %}
 <header>
-  <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <style>
         @font-face {
             font-family: 'jeju';
@@ -16,6 +15,11 @@
 
         .nav-link {
             color: #EB631B; /* Цвет текста */
+        }
+
+        .nav-link:hover {
+            color: #111;
+            background-color: #EB631B;
         }
   </style>
   <nav class="navbar navbar-light" style="background-color: #AAC9E7">

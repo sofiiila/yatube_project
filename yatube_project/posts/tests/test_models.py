@@ -1,27 +1,51 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from yatube_project.posts.forms import PostForm
-from yatube_project.posts.models import Group
+from ..models import Group, Post
+
+User = get_user_model()
 
 
-class PostFormTest(TestCase):
+class PostModelTest(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.user = User.objects.create_user(username='auth')
+        cls.group = Group.objects.create(
+            title='Тестовая группа',
+            slug='Тестовый слаг',
+            description='Тестовое описание',
+        )
+        cls.post = Post.objects.create(
+            author=cls.user,
+            text='Тестовый пост',
+        )
+
+        cls.posts = [cls.post]
+
+    def test_models_have_correct_object_names(self):
+        """Тест метода __str__ модели Post."""
+        for post in self.posts:
+            with self.subTest(post=post):
+                expected_object_name = post.text[:15]
+                self.assertEqual(str(post), expected_object_name)
+
+
+class GroupModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.group = Group.objects.create(name='Test Group')
+        # Создаем группы
+        cls.groups = [
+            Group.objects.create(
+                title=f'Test Group {i}',
+                slug=f'test-group-{i}',
+                description=f'This is test group {i}.'
+            ) for i in range(1, 4)
+        ]
 
-    def test_good_case_valid_data(self):
-        form_data = {
-            'text': 'Текст нового поста',
-            'group': self.group.id,
-        }
-        form = PostForm(data=form_data)
-        self.assertTrue(form.is_valid())
-
-    def test_bad_case_invalid_data(self):
-        form_data = {
-            'text': '',
-            'group': self.group.id,
-        }
-        form = PostForm(data=form_data)
-        self.assertFalse(form.is_valid())
-        self.assertIn('text', form.errors)
+    def test_group_str(self):
+        """Тест метода __str__ модели Group."""
+        for group in self.groups:
+            with self.subTest(group=group):
+                expected_object_name = group.title
+                self.assertEqual(str(group), expected_object_name)

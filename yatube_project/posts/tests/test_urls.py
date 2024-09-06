@@ -8,7 +8,7 @@ from posts.models import Group, Post
 User = get_user_model()
 
 
-class StaticURLTests(TestCase):
+class PostsURLTests(TestCase):
     def setUp(self):
         # неавторизован
         self.guest_client = Client()

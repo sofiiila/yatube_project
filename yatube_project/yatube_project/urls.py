@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+handler404 = 'core.views.custom_404'
 
 urlpatterns = [
     path('', include('posts.urls', namespace='posts')),

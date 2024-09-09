@@ -1,8 +1,8 @@
+from http import HTTPStatus
 from django.contrib.auth import get_user_model
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.http import HttpResponseNotFound
-
 from posts.models import Group, Post
 
 User = get_user_model()
@@ -30,15 +30,15 @@ class PostsURLTests(TestCase):
 
     def test_homepage(self):
         response = self.guest_client.get('/')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_authorized_access(self):
         urls = [
-            ('posts:group_posts', {'slug': 'test-group'}, 200),
-            ('posts:profile', {'username': 'testuser'}, 200),
-            ('posts:post_detail', {'post_id': self.post.id}, 200),
-            ('posts:post_create', {}, 200),
-            ('posts:post_edit', {'post_id': self.post.id}, 200),
+            ('posts:group_posts', {'slug': 'test-group'}, HTTPStatus.OK),
+            ('posts:profile', {'username': 'testuser'}, HTTPStatus.OK),
+            ('posts:post_detail', {'post_id': self.post.id}, HTTPStatus.OK),
+            ('posts:post_create', {}, HTTPStatus.OK),
+            ('posts:post_edit', {'post_id': self.post.id}, HTTPStatus.OK),
         ]
 
         for name, kwargs, expected_status in urls:
@@ -62,7 +62,7 @@ class PostsURLTests(TestCase):
 
     def test_404_page(self):
         response = self.guest_client.get('/nonexistent-page/')
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
 
     def test_templates(self):
         templates = {
@@ -81,7 +81,7 @@ class PostsURLTests(TestCase):
 
     def test_404_template(self):
         response = self.guest_client.get('/nonexistent-page/')
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
         self.assertTemplateUsed(response, 'core/404.html')
 
 

@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from django.test import TestCase, Client
 
 
@@ -12,4 +13,4 @@ class StaticPagesUrlTests(TestCase):
         for url in urls:
             with self.subTest(url=url):
                 response = self.guest_client.get(url)
-                self.assertEqual(response.status_code, 200)
+                self.assertEqual(response.status_code, HTTPStatus.OK)

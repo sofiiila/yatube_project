@@ -9,11 +9,38 @@ class ViewsTemplateTest(TestCase):
         self.client = Client()
         self.user = User.objects.create_user(username='testuser', password='testpassword')
         self.group = Group.objects.create(title='Test Group', slug='test-group')
+        self.other_group = Group.objects.create(title='Other Group', slug='other-group')
         self.post = Post.objects.create(
             text='Test post',
             author=self.user,
             group=self.group
         )
+
+    def test_post_on_index_page(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get(reverse('posts:index'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.post.text)
+
+    def test_post_on_group_page(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get(reverse('posts:group_posts', kwargs={'slug': self.group.slug}))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.post.text)
+
+    def test_post_on_profile_page(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get(reverse('posts:profile', kwargs={'username': self.user.username}))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('posts', response.context)
+        self.assertIn(self.post, response.context['posts'])
+        self.assertContains(response, self.post.text)
+
+    def test_post_not_on_other_group_page(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get(reverse('posts:group_posts', kwargs={'slug': self.other_group.slug}))
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, self.post.text)
 
     def test_templates_used(self):
         templates = {
@@ -27,24 +54,21 @@ class ViewsTemplateTest(TestCase):
 
         for view_name, template in templates.items():
             with self.subTest(view_name=view_name):
+                self.client.login(username='testuser', password='testpassword')
                 if view_name == 'posts:group_posts':
-                    self.client.login(username='testuser', password='testpassword')
                     response = self.client.get(reverse(view_name, kwargs={'slug': 'test-group'}))
                 elif view_name == 'posts:profile':
-                    self.client.login(username='testuser', password='testpassword')
                     response = self.client.get(reverse(view_name, kwargs={'username': 'testuser'}))
                 elif view_name == 'posts:post_detail':
-                    self.client.login(username='testuser', password='testpassword')
                     response = self.client.get(reverse(view_name, kwargs={'post_id': self.post.id}))
                 elif view_name == 'posts:post_create':
-                    self.client.login(username='testuser', password='testpassword')
                     response = self.client.get(reverse(view_name))
                 elif view_name == 'posts:post_edit':
-                    self.client.login(username='testuser', password='testpassword')
                     response = self.client.get(reverse(view_name, kwargs={'post_id': self.post.id}))
                 else:
                     response = self.client.get(reverse(view_name))
 
+                self.assertEqual(response.status_code, 200)
                 self.assertTemplateUsed(response, template)
 
     def test_context_data(self):
@@ -60,24 +84,21 @@ class ViewsTemplateTest(TestCase):
 
         for view_name, context in contexts.items():
             with self.subTest(view_name=view_name):
+                self.client.login(username='testuser', password='testpassword')
                 if view_name == 'posts:group_posts':
-                    self.client.login(username='testuser', password='testpassword')
                     response = self.client.get(reverse(view_name, kwargs={'slug': 'test-group'}))
                 elif view_name == 'posts:profile':
-                    self.client.login(username='testuser', password='testpassword')
                     response = self.client.get(reverse(view_name, kwargs={'username': 'testuser'}))
                 elif view_name == 'posts:post_detail':
-                    self.client.login(username='testuser', password='testpassword')
                     response = self.client.get(reverse(view_name, kwargs={'post_id': self.post.id}))
                 elif view_name == 'posts:post_create':
-                    self.client.login(username='testuser', password='testpassword')
                     response = self.client.get(reverse(view_name))
                 elif view_name == 'posts:post_edit':
-                    self.client.login(username='testuser', password='testpassword')
                     response = self.client.get(reverse(view_name, kwargs={'post_id': self.post.id}))
                 else:
                     response = self.client.get(reverse(view_name))
 
+                self.assertEqual(response.status_code, 200)
                 for key, expected in context.items():
                     with self.subTest(key=key):
                         self.assertIn(key, response.context)

@@ -38,3 +38,31 @@ class UsersURLTests(TestCase):
             with self.subTest(name=name, kwargs=kwargs):
                 response = self.authorized_client.get(reverse(name, kwargs=kwargs))
                 self.assertEqual(response.status_code, expected_status)
+
+    def test_templates(self):
+        templates = {
+            reverse('users:login'): 'users/login.html',
+            reverse('users:signup'): 'users/signup.html',
+            reverse('users:logout'): 'users/logged_out.html',
+            reverse('users:password_reset_form'): 'users/password_reset_form.html',
+            reverse('users:password_reset_confirm', kwargs={'uidb64': 'test', 'token': 'test'}): 'users/password_reset_confirm.html',
+            reverse('users:password_reset_complete'): 'users/password_reset_complete.html'
+        }
+
+        for url, template in templates.items():
+            with self.subTest(url=url, template=template):
+                response = self.authorized_client.get(url)
+                self.assertTemplateUsed(response, template)
+
+    def test_password_change_redirect(self):
+        response = self.authorized_client.post(reverse('users:password_change'), {
+            'old_password': '12345',
+            'new_password1': 'newpassword123',
+            'new_password2': 'newpassword123'
+        })
+        self.assertRedirects(response, reverse('users:password_change_done'))
+
+    def test_password_change_done_status(self):
+        response = self.authorized_client.get(reverse('users:password_change_done'))
+        self.assertEqual(response.status_code, HTTPStatus.OK)
+        self.assertTemplateUsed(response, 'users/password_change_done.html')

@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import path, include
 
 handler404 = 'core.views.custom_404'
+handler403 = 'core.views.permission_denied'
+handler403csrf = 'core.views.csrf_failure'
+handler500 = 'core.views.csrf_failure'
 
 urlpatterns = [
     path('', include('posts.urls', namespace='posts')),

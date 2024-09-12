@@ -37,13 +37,17 @@ def group_posts(request, slug):
 @login_required
 def profile(request, username):
     user = get_object_or_404(User, username=username)
-    posts = Post.objects.filter(author=user)
+    posts = Post.objects.filter(author=user).order_by('-pub_date')
+
+    paginator = Paginator(posts, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
     context = {
         'user_name': user.username,
         'total_posts': posts.count(),
         'user_posts_url': f'/profile/{username}',
-        'posts': posts
+        'page_obj': page_obj
     }
     return render(request, 'posts/profile.html', context)
 

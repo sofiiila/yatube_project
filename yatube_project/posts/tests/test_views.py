@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from posts.models import Post, Group
 
 
-class ViewsTemplateTest(TestCase):
+class PostsViewsTemplateTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user(username='testuser', password='testpassword')
@@ -32,8 +32,8 @@ class ViewsTemplateTest(TestCase):
         self.client.login(username='testuser', password='testpassword')
         response = self.client.get(reverse('posts:profile', kwargs={'username': self.user.username}))
         self.assertEqual(response.status_code, 200)
-        self.assertIn('posts', response.context)
-        self.assertIn(self.post, response.context['posts'])
+        self.assertIn('page_obj', response.context)
+        self.assertIn(self.post, response.context['page_obj'])
         self.assertContains(response, self.post.text)
 
     def test_post_not_on_other_group_page(self):
@@ -75,7 +75,7 @@ class ViewsTemplateTest(TestCase):
         contexts = {
             'posts:index': {'page_obj': True},
             'posts:group_posts': {'group': True, 'page_obj': True},
-            'posts:profile': {'user_name': True, 'total_posts': True, 'user_posts_url': True, 'posts': True},
+            'posts:profile': {'user_name': True, 'total_posts': True, 'user_posts_url': True, 'page_obj': True},
             'posts:post_detail': {'user_name': True, 'post_date': True, 'post_content': True, 'post_detail_url': True,
                                   'group_posts_url': True},
             'posts:post_create': {'form': True},

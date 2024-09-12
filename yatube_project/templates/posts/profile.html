@@ -24,34 +24,17 @@
   </header>
   <main>
     <div class="container py-5">
-      <h1>Все посты пользователя {{ user_name }} </h1>
-      <h3>Всего постов: {{ total_posts }} </h3>
-      {% for post in posts %}
-      <article>
-        <ul>
-          <li>
-            Автор: {{ user_name }}
-            {% if post.group and post.group.slug %}
-              <a href="{% url 'posts:group_posts' post.group.slug %}">все записи группы</a>
-            {% endif %}
-          </li>
-          <li>
-            Дата публикации: {{ post.pub_date }}
-          </li>
-        </ul>
-        <p>
-          {{ post.text }}
-        </p>
-        <a href="{% url 'posts:post_detail' post.id %}">подробная информация </a>
-      </article>
-      <a href="{{ group_posts_url }}">все записи группы</a>
-      <hr>
+      <h1>Все посты пользователя {{ user_name }}</h1>
+      <h3>Всего постов: {{ total_posts }}</h3>
+      {% for post in page_obj %}
+        <div class="post">
+          <h2>{{ post.text }}</h2>
+          <p>{{ post.pub_date }}</p>
+        </div>
       {% endfor %}
-      {% include 'posts/paginator.html' %}
     </div>
   </main>
   <footer class="border-top text-center py-3">
     <p>© {{ year }} Copyright <span style="color:red">Ya</span>tube</p>
   </footer>
 </body>
-</html>

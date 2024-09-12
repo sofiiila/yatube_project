@@ -6,14 +6,14 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-class PostTests(TestCase):
+class PostsFormTests(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user(username='testuser', password='testpassword')
         self.group = Group.objects.create(title='Test Group', slug='test-group')
         self.client.login(username='testuser', password='testpassword')
 
-    def test_create_post(self):
+    def test_post_create(self):
         form_data = {
             'text': 'Test post text',
             'group': self.group.id,

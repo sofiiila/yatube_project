@@ -6,7 +6,7 @@ from ..models import Group, Post
 User = get_user_model()
 
 
-class PostModelTest(TestCase):
+class PostsModelTest(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()

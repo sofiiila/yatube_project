@@ -75,10 +75,7 @@ def post_create(request):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-            print(f"Image URL: {post.image.url}")  # Отладочное сообщение
             return redirect('posts:post_detail', post.id)
-        else:
-            print(form.errors)  # Отладочное сообщение
     else:
         form = PostForm()
     return render(request, 'posts/create_post.html', {'form': form})

@@ -9,7 +9,7 @@
       {% for post in page_obj %}
       <article>
         <div class="post">
-          <h2>{{ post.text }}</h2>
+          <h2>{{ post.text|truncatechars:15 }}</h2>
           <p>{{ post.pub_date }}</p>
           <a href="{% url 'posts:post_detail' post.id %}">подробная информация </a>
           <a href="{{ group_posts_url }}">все записи группы</a>

@@ -5,19 +5,23 @@ User = get_user_model()
 
 
 class Post(models.Model):
+
     text = models.TextField(
         'Текст поста',
         help_text='Введите текст поста'
     )
+
     pub_date = models.DateTimeField(
         'Дата публикации',
         auto_now_add=True
     )
+
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         verbose_name='Автор'
     )
+
     group = models.ForeignKey(
         'Group',
         on_delete=models.SET_NULL,
@@ -27,6 +31,7 @@ class Post(models.Model):
         verbose_name='Группа',
         help_text='Выберите группу'
     )
+
     # Поле для картинки (необязательное)
     image = models.ImageField(
         'Картинка',

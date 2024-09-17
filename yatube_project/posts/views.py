@@ -61,7 +61,8 @@ def post_detail(request, post_id):
         'post_date': post.pub_date,
         'post_content': post.text,
         'post_detail_url': f'/posts/{post_id}',
-        'group_posts_url': '/group/posts'
+        'group_posts_url': '/group/posts',
+        'post': post,
     }
     return render(request, 'posts/post_detail.html', context)
 
@@ -69,16 +70,15 @@ def post_detail(request, post_id):
 @login_required
 def post_create(request):
     if request.method == 'POST':
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
             post.save()
-            if post.image:
-                print(f"Image URL: {post.image.url}")  # Временный вывод для проверки
-            else:
-                print("No image uploaded")
-            return redirect('posts:profile', username=request.user.username)
+            print(f"Image URL: {post.image.url}")  # Отладочное сообщение
+            return redirect('posts:post_detail', post.id)
+        else:
+            print(form.errors)  # Отладочное сообщение
     else:
         form = PostForm()
     return render(request, 'posts/create_post.html', {'form': form})

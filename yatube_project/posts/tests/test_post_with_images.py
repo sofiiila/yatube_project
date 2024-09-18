@@ -1,6 +1,5 @@
 import shutil
 import tempfile
-
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase, override_settings
@@ -11,7 +10,8 @@ from posts.forms import PostForm
 TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
 
 
-@override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
+@override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT, CACHES={'default':
+                                                           {'BACKEND': 'django.core.cache.backends.dummy.DummyCache'}})
 class PostTests(TestCase):
     @classmethod
     def setUpClass(cls):

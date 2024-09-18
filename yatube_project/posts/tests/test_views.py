@@ -1,9 +1,10 @@
-from django.test import TestCase, Client
+from django.test import TestCase, Client, override_settings
 from django.urls import reverse
 from django.contrib.auth.models import User
 from posts.models import Post, Group
 
 
+@override_settings(CACHES={'default': {'BACKEND': 'django.core.cache.backends.dummy.DummyCache'}})
 class PostsViewsTemplateTest(TestCase):
     def setUp(self):
         self.client = Client()

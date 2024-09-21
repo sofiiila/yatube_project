@@ -120,3 +120,16 @@ def add_comment(request, post_id):
         comment.post = post
         comment.save()
     return redirect('posts:post_detail', post_id=post_id)
+
+@login_required
+def follow_index():
+    context = {}
+    return render(request, 'posts/follow.html', context)
+
+@login_required
+def profile_follow():
+    return None
+
+@login_required
+def profile_unfollow():
+    return None

@@ -2,33 +2,38 @@
 <header>
   <style>
         @font-face {
-            font-family: 'jeju';
-            src: url('static/fonts/JejuHallasan-Regular.ttf') format('truetype');
+            font-family: 'coco';
+            src: url('static/fonts/CocoBiker.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
 
         .custom-font {
-            color: #000;
-            font-family: 'jeju', sans-serif;
+            color: rgba(29, 59, 40, 0.9);
+            font-family: 'coco', sans-serif;
             font-size: 28px;
+        }
 
         .nav-link {
-            color: #EB631B; /* Цвет текста */
+            color: #1D3B28; /* Цвет текста */
+            font-family: 'coco';
         }
 
         .nav-link:hover {
-            color: #111;
-            background-color: #EB631B;
+            color: #BA9F38;
+        }
+
+        .bold-text {
+            font-weight: bold;
         }
   </style>
-  <nav class="navbar navbar-light" style="background-color: #AAC9E7">
+  <nav class="navbar navbar-light" style="background-color: #E1CC96">
     <div class="container">
       <a class="navbar-brand" href="{% url 'posts:index' %}">
-        <img src="{% static 'img/yalogo.png' %}" width="45" height="45" class="d-inline-block align-center" alt="">
-        <span class="custom-font align-middle">Ya</span><span class="custom-font align-middle">tube</span>
+        <img src="" width="45" height="45" class="d-inline-block align-center" alt="">
+        <span class="custom-font align-middle">Yatube</span>
       </a>
-      <ul class="nav nav-pills">
+      <ul class="nav">
         {% with request.resolver_match.view_name as view_name %}
         <li class="nav-item">
           <a class="nav-link {% if view_name  == 'about:author' %}active{% endif %}" href="{% url 'about:author' %}">
@@ -48,8 +53,8 @@
         <li class="nav-item">
           <a class="nav-link link-light {% if view_name  == 'users:logout' %}active{% endif %}" href="{% url 'users:logout' %}">Выйти</a>
         </li>
-        <li>
-          Пользователь: {{ user.username }}
+        <li class="nav-item">
+          <a class="nav-link link-light bold-text {% if view_name  == 'posts:profile' %}active{% endif %}" href="{% url 'posts:profile' user %}">{{ user.username }}</a>
         </li>
         {% else %}
         <li class="nav-item">

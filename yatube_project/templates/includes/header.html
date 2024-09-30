@@ -3,7 +3,7 @@
   <style>
         @font-face {
             font-family: 'coco';
-            src: url('static/fonts/CocoBiker.ttf') format('truetype');
+            src: url('{% static "fonts/CocoBiker.ttf" %}') format('truetype');
             font-weight: normal;
             font-style: normal;
         }
@@ -30,7 +30,7 @@
   <nav class="navbar navbar-light" style="background-color: #E1CC96">
     <div class="container">
       <a class="navbar-brand" href="{% url 'posts:index' %}">
-        <img src="" width="45" height="45" class="d-inline-block align-center" alt="">
+        <img src="{% static 'img/logo_ya.png' %}" width="45" height="45" class="d-inline-block align-center" alt="">
         <span class="custom-font align-middle">Yatube</span>
       </a>
       <ul class="nav">

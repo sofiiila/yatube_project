@@ -3,6 +3,14 @@
     <div class="card">
       <div class="card-header">{{ card_header }}</div>
       <div class="card-body"><p>{{ card_body }}</p>
+        {% if card_link %}
+          <a href="{{ card_link }}">{{ card_link_text }}</a>
+        {% endif %}
+        {% if form %}
+          {% with button_text=button_text link_url=link_url link_text=link_text %}
+           {% include 'users/includes/form.html' %}
+          {% endwith %}
+        {% endif %}
       </div> <!-- card body -->
     </div> <!-- card -->
   </div> <!-- col -->
